@@ -12,9 +12,17 @@ const heroImages = [
 
 export function Hero() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [isClient, setIsClient] = useState(false);
+
+  // Asegurar que estamos en el cliente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // Cambiar imagen cada 3 segundos
   useEffect(() => {
+    if (!isClient) return;
+    
     const interval = setInterval(() => {
       setCurrentImageIndex((prevIndex) => 
         (prevIndex + 1) % heroImages.length
@@ -22,7 +30,7 @@ export function Hero() {
     }, 3000); // 3000 milisegundos = 3 segundos
 
     return () => clearInterval(interval); // Limpiar al desmontar
-  }, []);
+  }, [isClient]);
 
   const handleWhatsAppClick = () => {
     window.open('https://wa.link/k7ihqh', '_blank');
